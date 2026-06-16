@@ -1,1 +1,72 @@
+# greedy_search.py
 
+from queue import PriorityQueue
+
+def greedy_search(graph, start, goal, heuristic):
+    """
+    Implementa o algoritmo de busca gulosa em um grafo.
+
+    :param graph: Dicionário representando o grafo, onde as chaves são os nós e os valores são listas de tuplas (vizinho, custo).
+    :param start: Nó inicial.
+    :param goal: Nó objetivo.
+    :param heuristic: Função heurística que recebe um nó e retorna uma estimativa do custo até o objetivo.
+    :return: Lista com o caminho do start até o goal, ou None se não encontrar caminho.
+    """
+    frontier = PriorityQueue()
+    frontier.put((heuristic(start), start))
+    came_from = {start: None}
+
+    while not frontier.empty():
+        _, current = frontier.get()
+
+        if current == goal:
+            # Reconstruir caminho
+            path = []
+            while current:
+                path.append(current)
+                current = came_from[current]
+            path.reverse()
+            return path
+
+        for neighbor, cost in graph.get(current, []):
+            if neighbor not in came_from:
+                priority = heuristic(neighbor)
+                frontier.put((priority, neighbor))
+                came_from[neighbor] = current
+
+    return None
+
+# Exemplo de uso
+if __name__ == "__main__":
+    # Grafo exemplo: cada nó tem uma lista de (vizinho, custo)
+    graph = {
+        'A': [('B', 1), ('C', 4)],
+        'B': [('D', 2), ('E', 5)],
+        'C': [('F', 3)],
+        'D': [],
+        'E': [('F', 1)],
+        'F': []
+    }
+
+    # Heurística: estimativa do custo do nó até o objetivo 'F'
+    heuristic_values = {
+        'A': 7,
+        'B': 6,
+        'C': 2,
+        'D': 1,
+        'E': 0,
+        'F': 0
+    }
+
+    def heuristic(node):
+        return heuristic_values.get(node, float('inf'))
+
+    start_node = 'A'
+    goal_node = 'F'
+
+    path = greedy_search(graph, start_node, goal_node, heuristic)
+
+    if path:
+        print(f"Caminho encontrado pela busca gulosa: {' -> '.join(path)}")
+    else:
+        print("Caminho não encontrado.")
