@@ -1,0 +1,69 @@
++-------------------------+
+| Início                  |
+| Recebe: grafo, start,   |
+| goal, heurística        |
++-----------+-------------+
+            |
+            v
++-------------------------+
+| Inicializa a fronteira  |
+| (PriorityQueue) com o   |
+| start e sua heurística  |
++-----------+-------------+
+            |
+            v
++-------------------------+
+| Inicializa dicionário    |
+| came_from[start] = None  |
++-----------+-------------+
+            |
+            v
++-------------------------+
+| Enquanto a fronteira não |
+| estiver vazia:          |
++-----------+-------------+
+            |
+            v
++-------------------------+
+| Remove o nó com menor   |
+| heurística da fronteira |
+| (current)               |
++-----------+-------------+
+            |
+            v
++-------------------------+
+| current == goal?        |
+|  ├─ Sim → Reconstrói    |
+|  │   caminho e retorna  |
+|  └─ Não → Continua      |
++-----------+-------------+
+            |
+            v
++-------------------------+
+| Para cada vizinho de    |
+| current:                |
+|  ├─ Se vizinho não está |
+|  │  em came_from:       |
+|  │   ├─ Calcula         |
+|  │   │  heurística      |
+|  │   ├─ Adiciona vizinho|
+|  │   │  na fronteira    |
+|  │   └─ Atualiza came_from[vizinho] = current |
++-----------+-------------+
+            |
+            v
++-------------------------+
+| Fim do loop             |
++-----------+-------------+
+            |
+            v
++-------------------------+
+| Se a fronteira esvaziar |
+| sem encontrar goal,     |
+| retorna None            |
++-----------+-------------+
+            |
+            v
++-------------------------+
+| Fim                     |
++-------------------------+
